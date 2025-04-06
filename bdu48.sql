@@ -1,0 +1,1 @@
+ALTER	TABLE major ADD COLUMN `open_to_recruitment` TINYINT NOT NULL DEFAULT '1';
