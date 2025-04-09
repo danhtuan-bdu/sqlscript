@@ -1,0 +1,226 @@
+create database bctm_bdu;
+use bctm_bdu;
+
+DROP TABLE IF EXISTS `baocaohangtuan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `baocaohangtuan` (
+  `maBaoCao` int NOT NULL AUTO_INCREMENT,
+  `ngayTao` date NOT NULL,
+  `gioBatDau` time NOT NULL,
+  `gioKetThuc` time NOT NULL,
+  `trangThai` enum('Đang thực hiện','Chờ duyệt','Từ chối','Hoàn thành','Quá hạn') NOT NULL,
+  `maDonVi` int NOT NULL,
+  PRIMARY KEY (`maBaoCao`),
+  KEY `maDonVi` (`maDonVi`),
+  CONSTRAINT `baocaohangtuan_ibfk_1` FOREIGN KEY (`maDonVi`) REFERENCES `donvi` (`maDonVi`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `baocaohangtuan`
+--
+
+LOCK TABLES `baocaohangtuan` WRITE;
+/*!40000 ALTER TABLE `baocaohangtuan` DISABLE KEYS */;
+/*!40000 ALTER TABLE `baocaohangtuan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `danhmuc`
+--
+
+DROP TABLE IF EXISTS `danhmuc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `danhmuc` (
+  `maDanhMuc` int NOT NULL AUTO_INCREMENT,
+  `tenDanhMuc` varchar(255) NOT NULL,
+  PRIMARY KEY (`maDanhMuc`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `danhmuc`
+--
+
+LOCK TABLES `danhmuc` WRITE;
+/*!40000 ALTER TABLE `danhmuc` DISABLE KEYS */;
+INSERT INTO `danhmuc` VALUES (1,'Tuyển sinh'),(2,'Giảng dạy'),(3,'Nghiên cứu khoa học'),(4,'Khác');
+/*!40000 ALTER TABLE `danhmuc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `danhmucbaocao`
+--
+
+DROP TABLE IF EXISTS `danhmucbaocao`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `danhmucbaocao` (
+  `maDMBC` int NOT NULL AUTO_INCREMENT,
+  `maBaoCao` int NOT NULL,
+  `maDanhMuc` int NOT NULL,
+  PRIMARY KEY (`maDMBC`),
+  KEY `maBaoCao` (`maBaoCao`),
+  KEY `maDanhMuc` (`maDanhMuc`),
+  CONSTRAINT `danhmucbaocao_ibfk_1` FOREIGN KEY (`maBaoCao`) REFERENCES `baocaohangtuan` (`maBaoCao`),
+  CONSTRAINT `danhmucbaocao_ibfk_2` FOREIGN KEY (`maDanhMuc`) REFERENCES `danhmuc` (`maDanhMuc`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `danhmucbaocao`
+--
+
+LOCK TABLES `danhmucbaocao` WRITE;
+/*!40000 ALTER TABLE `danhmucbaocao` DISABLE KEYS */;
+/*!40000 ALTER TABLE `danhmucbaocao` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `donvi`
+--
+
+DROP TABLE IF EXISTS `donvi`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `donvi` (
+  `maDonVi` int NOT NULL AUTO_INCREMENT,
+  `tenDonVi` varchar(255) NOT NULL,
+  PRIMARY KEY (`maDonVi`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `donvi`
+--
+
+LOCK TABLES `donvi` WRITE;
+/*!40000 ALTER TABLE `donvi` DISABLE KEYS */;
+INSERT INTO `donvi` VALUES (1,'Khoa CNTT');
+/*!40000 ALTER TABLE `donvi` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `giangvien`
+--
+
+DROP TABLE IF EXISTS `giangvien`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `giangvien` (
+  `maGiangVien` int NOT NULL AUTO_INCREMENT,
+  `tenGiangVien` varchar(255) NOT NULL,
+  `chucVu` varchar(255) DEFAULT NULL,
+  `maDonVi` int NOT NULL,
+  PRIMARY KEY (`maGiangVien`),
+  KEY `giangvien_ibfk_1` (`maDonVi`),
+  CONSTRAINT `giangvien_ibfk_1` FOREIGN KEY (`maDonVi`) REFERENCES `donvi` (`maDonVi`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `giangvien`
+--
+
+LOCK TABLES `giangvien` WRITE;
+/*!40000 ALTER TABLE `giangvien` DISABLE KEYS */;
+INSERT INTO `giangvien` VALUES (1,'Nguyễn Thanh Sơn','Phó Khoa',1),(2,'Dương Anh Tuấn','Phụ trách TT CDS',1);
+/*!40000 ALTER TABLE `giangvien` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `loainoidung`
+--
+
+DROP TABLE IF EXISTS `loainoidung`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `loainoidung` (
+  `maLoaiNoiDung` int NOT NULL AUTO_INCREMENT,
+  `tenLoaiNoiDung` varchar(255) NOT NULL,
+  PRIMARY KEY (`maLoaiNoiDung`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `loainoidung`
+--
+
+LOCK TABLES `loainoidung` WRITE;
+/*!40000 ALTER TABLE `loainoidung` DISABLE KEYS */;
+INSERT INTO `loainoidung` VALUES (1,'Kết quả đạt được trong tuần'),(2,'Nội dung tuần sau'),(3,'Đề xuất, kiến nghị');
+/*!40000 ALTER TABLE `loainoidung` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `noidung`
+--
+
+DROP TABLE IF EXISTS `noidung`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `noidung` (
+  `maNoiDung` int NOT NULL AUTO_INCREMENT,
+  `noiDung` text NULL,
+  `maLoaiNoiDung` int NOT NULL,
+  `maDMBC` int NOT NULL,
+  PRIMARY KEY (`maNoiDung`),
+  KEY `maLoaiNoiDung` (`maLoaiNoiDung`),
+  KEY `maDMBC` (`maDMBC`),
+  CONSTRAINT `noidung_ibfk_1` FOREIGN KEY (`maLoaiNoiDung`) REFERENCES `loainoidung` (`maLoaiNoiDung`),
+  CONSTRAINT `noidung_ibfk_2` FOREIGN KEY (`maDMBC`) REFERENCES `danhmucbaocao` (`maDMBC`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `noidung`
+--
+
+LOCK TABLES `noidung` WRITE;
+/*!40000 ALTER TABLE `noidung` DISABLE KEYS */;
+/*!40000 ALTER TABLE `noidung` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `taikhoan`
+--
+
+DROP TABLE IF EXISTS `taikhoan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `taikhoan` (
+  `maTaiKhoan` int NOT NULL AUTO_INCREMENT,
+  `taiKhoan` varchar(50) NOT NULL,
+  `matKhau` varchar(255) NOT NULL,
+  `trangThai` enum('0','1') NOT NULL DEFAULT '1',
+  `maGiangVien` int NOT NULL,
+  `vaiTro` enum('GV','TKDV','TDV','TKHT') NOT NULL,
+  `token` text,
+  PRIMARY KEY (`maTaiKhoan`),
+  KEY `maGiangVien` (`maGiangVien`),
+  CONSTRAINT `taikhoan_ibfk_1` FOREIGN KEY (`maGiangVien`) REFERENCES `giangvien` (`maGiangVien`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `taikhoan`
+--
+
+LOCK TABLES `taikhoan` WRITE;
+/*!40000 ALTER TABLE `taikhoan` DISABLE KEYS */;
+INSERT INTO `taikhoan` VALUES (1,'ntson','ntson','1',1,'TDV','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0MDkzODE5LCJpYXQiOjE3NDQwOTM1MTksImp0aSI6IjlkNDU1OGYxNjJiMjQ4NjBiYjZmYTZlOGUwNDEwNDEwIiwidXNlcl9pZCI6MX0.T_FQGNoJqC14UtXs-r440lD6FjEAz7GqYTpW6jWviGY'),(2,'datuan','datuan','1',2,'TKDV','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0MDkzODUyLCJpYXQiOjE3NDQwOTM1NTIsImp0aSI6IjY1ODVkNzg3OWNiYzQwYjZhZGQ5ODIzNmQ2ODhkY2ZlIiwidXNlcl9pZCI6Mn0.0XGgPxpoCYABeNZWwv0jvpsgbgYtH7dcm_Er2omfx7c');
+/*!40000 ALTER TABLE `taikhoan` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-04-08 14:05:09
